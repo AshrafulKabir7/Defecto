@@ -1,0 +1,18 @@
+{
+  "category": "cashew",
+  "model": "patchcore",
+  "implementation": "patchcore_lite (ResNet18 layer2+layer3, k-center coreset, CPU)",
+  "train_images": 300,
+  "train_seconds": 84.1,
+  "memory_bank": [
+    3072,
+    384
+  ],
+  "coreset_sampling_ratio": 0.01,
+  "backbone": "resnet18 (ImageNet, torchvision)",
+  "normalisation": {
+    "raw_threshold": 1.63961,
+    "raw_min": 1.40226,
+    "raw_max": 3.36825
+  }
+}

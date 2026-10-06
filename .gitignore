@@ -1,0 +1,27 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.cache/
+
+# Datasets and training output (re-created by scripts in ml/)
+data/*
+!data/README.md
+results/
+lightning_logs/
+
+# Large model weights (exported demo models under models/ are kept)
+*.ckpt
+
+# Web
+web/node_modules/
+web/dist/
+
+# Dev-only copy of the ONNX Runtime binaries (recreated by `npm run dev`)
+web/public/ort/
+# Local training logs (contain machine paths)
+logs/
+# Local environment and secrets: never commit
+.env
+.env.*
+.vercel

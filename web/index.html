@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Defecto — Visual quality inspection that learns from good parts</title>
+<meta name="description" content="Defecto finds and locates manufacturing defects with anomaly detection trained only on photos of good parts, with escape and false-reject rates measured on held-out data.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..800&display=swap">
+<style>
+:root {
+  --font: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --ink: #0b0b0c;
+  --ink-soft: #3a3a3d;
+  --muted: #76767c;
+  --faint: #b4b4ba;
+  --line: #ececef;
+  --surface: #f4f4f6;
+  --panel: #ffffff;
+  --accent: #38c6ec;
+  --accent-ink: #0a86a8;
+  --pass: #2a9a30;
+  --review: #f6a825;
+  --fail: #e5484d;
+  --radius: 22px;
+  --page: min(1180px, calc(100% - 40px));
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 24px 60px -30px rgba(2,72,105,.35);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: var(--font); color: var(--ink); background: #fff; -webkit-font-smoothing: antialiased; letter-spacing: -0.012em; }
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+.wrap { width: var(--page); margin: 0 auto; }
+
+/* Nav */
+.topbar { position: sticky; top: 0; z-index: 30; padding: 14px 0; background: linear-gradient(#fff 70%, rgba(255,255,255,0)); }
+.nav { width: var(--page); margin: 0 auto; display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 10px 0 20px; border-radius: 999px; background: var(--ink); color: #fff; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 650; font-size: 18px; text-decoration: none; letter-spacing: -0.02em; }
+.brand sup { font-size: 11px; color: var(--accent); margin-left: 1px; }
+.links { display: flex; gap: 2px; margin-left: auto; }
+.links a { padding: 9px 14px; border-radius: 999px; font-size: 15px; font-weight: 500; text-decoration: none; color: rgba(255,255,255,.82); transition: background .2s, color .2s; }
+.links a:hover { background: rgba(255,255,255,.1); color: #fff; }
+.cta-nav { margin-left: 8px; padding: 10px 18px; border-radius: 999px; background: #fff; color: var(--ink); font-weight: 600; font-size: 15px; text-decoration: none; }
+.burger { display: none; margin-left: auto; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(255,255,255,.1); color: #fff; font-size: 18px; cursor: pointer; }
+.mobile-menu { display: none; }
+
+/* Hero */
+.hero { padding: 48px 0 72px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1.02fr; gap: 56px; align-items: center; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: #e9f9fd; color: var(--accent-ink); font-size: 13.5px; font-weight: 600; }
+.eyebrow i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+h1 { margin: 20px 0 0; font-size: clamp(42px, 5.6vw, 66px); line-height: 1.02; font-weight: 600; letter-spacing: -0.05em; }
+.lede { margin: 22px 0 0; max-width: 520px; font-size: 18.5px; line-height: 1.6; color: var(--ink-soft); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; height: 50px; padding: 0 24px; border-radius: 999px; font-size: 16px; font-weight: 600; text-decoration: none; transition: transform .2s, background .2s; }
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-dark:hover { transform: translateY(-1px); background: #222; }
+.btn-light { background: var(--surface); color: var(--ink); }
+.btn-light:hover { background: #e9e9ec; }
+.proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 38px; padding-top: 24px; border-top: 1px solid var(--line); }
+.proof b { display: block; font-size: 28px; font-weight: 600; letter-spacing: -0.03em; }
+.proof span { font-size: 14px; color: var(--muted); line-height: 1.4; }
+
+.inspect-card { position: relative; border-radius: 28px; background: var(--surface); padding: 14px; box-shadow: var(--shadow); }
+.inspect-frame { position: relative; overflow: hidden; border-radius: 18px; background: #111; aspect-ratio: 3 / 2; }
+.inspect-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.inspect-frame .heat { transition: opacity .5s; }
+.scan { position: absolute; left: 0; right: 0; height: 2px; background: var(--accent); box-shadow: 0 0 20px 5px rgba(56,198,236,.55); animation: scan 3.2s cubic-bezier(.45,0,.2,1) infinite; }
+@keyframes scan { 0% { top: 0; opacity: 0 } 10% { opacity: 1 } 70% { top: 100%; opacity: 1 } 80%, 100% { top: 100%; opacity: 0 } }
+.chip { position: absolute; top: 12px; left: 12px; padding: 5px 10px; border-radius: 999px; background: rgba(0,0,0,.7); color: #fff; font-size: 12.5px; font-weight: 600; backdrop-filter: blur(6px); }
+.result { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; margin-top: 12px; padding: 14px 16px; border-radius: 16px; background: #fff; }
+.verdict { display: inline-flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.verdict i { width: 12px; height: 12px; border-radius: 50%; background: var(--fail); }
+.result small { display: block; font-size: 13px; color: var(--muted); }
+.result .score { font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 600; text-align: right; }
+.meter { position: relative; height: 6px; border-radius: 999px; background: var(--line); grid-column: 1 / -1; }
+.meter > span { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: var(--fail); }
+.meter > i { position: absolute; top: -4px; width: 2px; height: 14px; background: var(--ink); opacity: .35; }
+.caption { margin: 10px 4px 2px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+/* Sections */
+section { padding: 96px 0; }
+.kicker { font-size: 14px; font-weight: 650; color: var(--accent-ink); text-transform: uppercase; letter-spacing: .08em; }
+h2 { margin: 12px 0 0; font-size: clamp(32px, 4vw, 48px); line-height: 1.08; font-weight: 600; letter-spacing: -0.045em; }
+.section-copy { margin: 16px 0 0; max-width: 620px; font-size: 17px; line-height: 1.65; color: var(--ink-soft); }
+.grey { background: var(--surface); }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 44px; counter-reset: s; }
+.step { padding: 28px; border-radius: var(--radius); background: #fff; }
+.step b { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--ink); color: #fff; font-size: 16px; }
+.step h3 { margin: 22px 0 8px; font-size: 21px; font-weight: 650; letter-spacing: -0.03em; }
+.step p { margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--ink-soft); }
+.bands { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.band { padding: 4px 10px; border-radius: 999px; font-size: 13px; font-weight: 650; }
+.band.pass { background: #e6f5e7; color: var(--pass); }
+.band.review { background: #fff3dc; color: #a86a05; }
+.band.fail { background: #fde8e9; color: var(--fail); }
+
+.results { margin-top: 40px; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 15.5px; }
+th { padding: 16px 20px; text-align: left; font-size: 13px; font-weight: 650; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; background: #fafafb; border-bottom: 1px solid var(--line); }
+td { padding: 18px 20px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+td small { display: block; margin-top: 2px; color: var(--muted); font-size: 13px; }
+.note { margin-top: 16px; font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+.note a { color: var(--accent-ink); }
+
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.uses { display: grid; gap: 12px; margin-top: 30px; }
+.use { display: flex; gap: 16px; padding: 18px 20px; border-radius: 18px; background: var(--surface); }
+.use strong { display: block; font-size: 16.5px; }
+.use span { font-size: 15px; color: var(--ink-soft); line-height: 1.5; }
+.gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.gallery figure { margin: 0; position: relative; overflow: hidden; border-radius: 18px; background: #111; aspect-ratio: 4 / 3; }
+.gallery img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.gallery figcaption { position: absolute; left: 10px; bottom: 10px; padding: 4px 9px; border-radius: 999px; background: rgba(0,0,0,.65); color: #fff; font-size: 12.5px; font-weight: 600; }
+
+.cta { margin: 0 auto 72px; width: var(--page); padding: 64px 40px; border-radius: 32px; background: var(--ink); color: #fff; text-align: center; overflow: hidden; position: relative; }
+.cta::before { content: ''; position: absolute; inset: auto -10% -60% -10%; height: 120%; background: radial-gradient(ellipse at 50% 100%, rgba(56,198,236,.35), transparent 60%); }
+.cta > * { position: relative; }
+.cta h2 { margin: 0; }
+.cta p { margin: 14px auto 28px; max-width: 520px; font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.72); }
+.cta .btn-light { background: #fff; }
+
+footer { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 14px; color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; }
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .scan { animation: none; display: none; } }
+
+@media (max-width: 980px) {
+  .hero-grid, .split { grid-template-columns: 1fr; gap: 40px; }
+  .steps { grid-template-columns: 1fr; }
+  .links, .cta-nav { display: none; }
+  .burger { display: block; }
+  .nav.open + .mobile-menu { display: grid; }
+  .mobile-menu { width: var(--page); margin: 8px auto 0; padding: 10px; gap: 4px; border-radius: 22px; background: var(--ink); }
+  .mobile-menu a { padding: 12px 14px; border-radius: 14px; color: #fff; text-decoration: none; font-weight: 500; }
+  .mobile-menu a:hover { background: rgba(255,255,255,.1); }
+}
+@media (max-width: 560px) {
+  .hero { padding-top: 28px; }
+  .proof { grid-template-columns: 1fr 1fr; }
+  section { padding: 72px 0; }
+  .cta { padding: 48px 22px; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="./">
+      <svg viewBox="0 0 26 25" width="24" height="23" fill="none" aria-hidden="true">
+        <circle cx="11.2" cy="11" r="8.6" stroke="#38c6ec" stroke-width="3.2"/>
+        <circle cx="11.2" cy="11" r="2.9" fill="#38c6ec"/>
+        <path d="M17.6 17.4 L23.6 23.2" stroke="#38c6ec" stroke-width="3.4" stroke-linecap="round"/>
+      </svg>
+      Defecto<sup>AI</sup>
+    </a>
+    <div class="links">
+      <a href="app.html#/product">Product</a>
+      <a href="app.html#/demo">Demo</a>
+      <a href="app.html#/inspect">Live inspect</a>
+      <a href="app.html#/evaluation">Evaluation</a>
+      <a href="app.html#/pricing">Pricing</a>
+    </div>
+    <a class="cta-nav" href="app.html#/pilot">Book a Pilot</a>
+    <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="app.html#/product">Product</a>
+    <a href="app.html#/demo">Demo</a>
+    <a href="app.html#/inspect">Live inspect</a>
+    <a href="app.html#/evaluation">Evaluation</a>
+    <a href="app.html#/pricing">Pricing</a>
+    <a href="app.html#/pilot">Book a Pilot</a>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow"><i></i> Anomaly detection for quality inspection</span>
+        <h1>Spot defects before they leave the line.</h1>
+        <p class="lede">Defecto learns what a good part looks like from photos of good parts only, then scores every new part and shows where it differs. No library of defect photos needed.</p>
+        <div class="actions">
+          <a class="btn btn-dark" href="app.html#/inspect">Try it in your browser →</a>
+          <a class="btn btn-light" href="app.html#/evaluation">See the evaluation</a>
+        </div>
+        <div class="proof">
+          <div><b data-stat="auroc">—</b><span>image AUROC, best product, held-out test</span></div>
+          <div><b data-stat="pixel">—</b><span>pixel AUROC for defect location</span></div>
+          <div><b>0</b><span>defect photos used for training</span></div>
+        </div>
+      </div>
+
+      <figure class="inspect-card" style="margin:0">
+        <div class="inspect-frame">
+          <img id="hero-img" src="demo/pcb1/img/bad-005.jpg" alt="A PCB1 sensor board from the VisA test split with a defect">
+          <img id="hero-heat" class="heat" src="" alt="" style="opacity:0">
+          <div class="scan" aria-hidden="true"></div>
+          <span class="chip">Held-out test part · real model output</span>
+        </div>
+        <div class="result">
+          <span class="verdict"><i id="hero-dot"></i><span id="hero-verdict">FAIL</span></span>
+          <span><small>Detected defect</small><span id="hero-defect">—</span></span>
+          <span class="score"><small>Anomaly score</small><span id="hero-score">—</span></span>
+          <div class="meter" aria-hidden="true"><span id="hero-meter" style="width:0"></span><i id="hero-review"></i><i id="hero-fail" style="left:50%"></i></div>
+        </div>
+        <figcaption class="caption">VisA dataset (Amazon Science, CC BY 4.0). Heatmap and score come from the trained model; the part was never seen during training or threshold fitting.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <section class="grey" id="how">
+    <div class="wrap reveal">
+      <p class="kicker">How it works</p>
+      <h2>Learn the good part. Flag everything else.</h2>
+      <p class="section-copy">Defects are rare and varied, so collecting examples of every one is impractical. Anomaly detection turns the problem around: model normal parts precisely, and measure how far each new part strays from them.</p>
+      <div class="steps">
+        <div class="step"><b>1</b><h3>Learn from good parts</h3><p>A few hundred photos of good parts become a memory bank of small image patches, using features from a pretrained ResNet18.</p></div>
+        <div class="step"><b>2</b><h3>Score every patch</h3><p>Each patch of a new part is compared with its nearest good-part memory. Unusual patches light up the heatmap and raise the score.</p></div>
+        <div class="step"><b>3</b><h3>Decide with three bands</h3><p>Thresholds are fitted on a separate validation split: confident defects are rejected, uncertain parts go to a person.</p>
+          <div class="bands"><span class="band pass">PASS</span><span class="band review">REVIEW</span><span class="band fail">FAIL</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="results">
+    <div class="wrap reveal">
+      <p class="kicker">Measured, not promised</p>
+      <h2>Results on held-out test parts.</h2>
+      <p class="section-copy">Three VisA products. Training used good parts only; thresholds came from a separate validation split; every number below comes from test parts nothing was fitted on.</p>
+      <div class="results">
+        <table>
+          <thead><tr><th>Product</th><th>Image AUROC</th><th>Pixel AUROC</th><th>Defects caught at FAIL</th><th>Good parts rejected</th><th>Defects past REVIEW</th></tr></thead>
+          <tbody id="results-body"><tr><td colspan="6">Loading results…</td></tr></tbody>
+        </table>
+      </div>
+      <p class="note">Small defects on a tray of many capsules are only a few pixels wide at the 256 px model input, which is why Capsules scores lowest; a production build would tile the image or raise the resolution. Full ROC curves, confusion counts and latency are in the <a href="app.html#/evaluation">evaluation report</a>.</p>
+    </div>
+  </section>
+
+  <section class="grey">
+    <div class="wrap split reveal">
+      <div>
+        <p class="kicker">Where it fits</p>
+        <h2>Any line where &ldquo;good&rdquo; looks consistent.</h2>
+        <div class="uses">
+          <div class="use"><div><strong>Electronics assembly</strong><span>Bent pins, melted plastic, scratches and missing components on boards.</span></div></div>
+          <div class="use"><div><strong>Pharma and packaging</strong><span>Bubbles, discoloration, leaks and misshapen units across a tray.</span></div></div>
+          <div class="use"><div><strong>Food grading</strong><span>Burns, breakage, holes and spots on natural products that vary part to part.</span></div></div>
+        </div>
+      </div>
+      <div class="gallery" id="gallery">
+        <figure><img src="demo/pcb1/img/bad-005.jpg" alt="PCB1 test part" loading="lazy"><figcaption>PCB1</figcaption></figure>
+        <figure><img src="demo/capsules/img/good-011.jpg" alt="Capsules test tray" loading="lazy"><figcaption>Capsules</figcaption></figure>
+        <figure><img src="demo/cashew/img/good-006.jpg" alt="Cashew test part" loading="lazy"><figcaption>Cashew</figcaption></figure>
+        <figure><img src="demo/pcb1/img/good-0046.jpg" alt="PCB1 good part" loading="lazy"><figcaption>PCB1 · good</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta reveal">
+    <h2>See it on your own parts.</h2>
+    <p>A pilot trains on photos from your station and reports escape and false-reject rates on parts the model has never seen.</p>
+    <div class="actions" style="justify-content:center">
+      <a class="btn btn-light" href="app.html#/pilot">Book a pilot</a>
+      <a class="btn" style="color:#fff;border:1px solid rgba(255,255,255,.3)" href="app.html#/demo">Watch the demo</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Defecto portfolio demo. Images: VisA dataset (Amazon Science, CC BY 4.0).</span>
+    <span><a href="app.html#/evaluation">Evaluation</a> · <a href="app.html#/faq">FAQ</a> · <a href="app.html#/pilot">Book a pilot</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var nav = document.querySelector('.nav');
+  var burger = document.querySelector('.burger');
+  burger.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 }) : null;
+  document.querySelectorAll('.reveal').forEach(function (el) { io ? io.observe(el) : el.classList.add('in'); });
+
+  function pct(x) { return (x * 100).toFixed(1) + '%'; }
+  var names = { pcb1: 'PCB1', capsules: 'Capsules', cashew: 'Cashew' };
+
+  // Every number on this page is read from the exported evaluation, so it cannot drift.
+  fetch('demo/index.json').then(function (r) { return r.json(); }).then(function (index) {
+    var cats = index.categories.filter(function (c) { return c.hasModel; });
+    return Promise.all(cats.map(function (c) {
+      return fetch('demo/' + c.category + '/manifest.json').then(function (r) { return r.json(); });
+    }));
+  }).then(function (manifests) {
+    var rows = '', bestAuroc = 0, bestPixel = 0;
+    manifests.forEach(function (m) {
+      var t = m.model.test, f = t.at_fail_threshold, rb = t.with_review_band;
+      bestAuroc = Math.max(bestAuroc, t.image_auroc);
+      bestPixel = Math.max(bestPixel, t.pixel_auroc || 0);
+      rows += '<tr><td><strong>' + (names[m.category] || m.category) + '</strong><small>' + t.n_good + ' good · ' + t.n_bad + ' defective</small></td>' +
+        '<td>' + t.image_auroc.toFixed(3) + '</td><td>' + (t.pixel_auroc != null ? t.pixel_auroc.toFixed(3) : '—') + '</td>' +
+        '<td>' + pct(f.recall) + '<small>' + f.tp + ' of ' + (f.tp + f.fn) + '</small></td>' +
+        '<td>' + pct(f.false_reject_rate) + '<small>' + f.fp + ' of ' + (f.fp + f.tn) + '</small></td>' +
+        '<td>' + pct(rb.escape_rate) + '<small>' + rb.bad.pass + ' auto-passed</small></td></tr>';
+    });
+    document.getElementById('results-body').innerHTML = rows || '<tr><td colspan="6">No evaluated models yet.</td></tr>';
+    if (bestAuroc) document.querySelector('[data-stat="auroc"]').textContent = bestAuroc.toFixed(3);
+    if (bestPixel) document.querySelector('[data-stat="pixel"]').textContent = bestPixel.toFixed(3);
+
+    // Hero: the PCB1 test defect the model scored highest, with its real heatmap.
+    var pcb = manifests.filter(function (m) { return m.category === 'pcb1'; })[0] || manifests[0];
+    if (!pcb) return;
+    var best = pcb.items.filter(function (i) { return i.label === 'bad' && i.heat && i.score != null; })
+      .sort(function (a, b) { return b.score - a.score; })[0];
+    if (!best) return;
+    var th = pcb.model.thresholds;
+    var verdict = best.score >= th.fail ? 'FAIL' : best.score >= th.review ? 'REVIEW' : 'PASS';
+    var color = verdict === 'FAIL' ? 'var(--fail)' : verdict === 'REVIEW' ? 'var(--review)' : 'var(--pass)';
+    var img = document.getElementById('hero-img'), heat = document.getElementById('hero-heat');
+    img.src = 'demo/' + pcb.category + '/img/' + best.id + '.jpg';
+    heat.src = 'demo/' + pcb.category + '/heat/' + best.id + '.png';
+    heat.onload = function () { heat.style.opacity = 1; };
+    document.getElementById('hero-verdict').textContent = verdict;
+    document.getElementById('hero-dot').style.background = color;
+    document.getElementById('hero-defect').textContent = best.defects.join(', ') || 'anomaly';
+    document.getElementById('hero-score').textContent = best.score.toFixed(3);
+    var meter = document.getElementById('hero-meter');
+    meter.style.width = Math.min(100, best.score * 100) + '%';
+    meter.style.background = color;
+    document.getElementById('hero-review').style.left = (th.review * 100) + '%';
+  }).catch(function () {
+    document.getElementById('results-body').innerHTML = '<tr><td colspan="6">Results could not be loaded.</td></tr>';
+  });
+})();
+</script>
+</body>
+</html>

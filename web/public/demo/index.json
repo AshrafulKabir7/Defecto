@@ -1,0 +1,25 @@
+{
+ "categories": [
+  {
+   "category": "pcb1",
+   "title": "PCB1: ultrasonic sensor board",
+   "hasModel": true,
+   "model": "patchcore",
+   "n": 120
+  },
+  {
+   "category": "capsules",
+   "title": "Capsules: soft-gel tray",
+   "hasModel": true,
+   "model": "patchcore",
+   "n": 96
+  },
+  {
+   "category": "cashew",
+   "title": "Cashew: single nut",
+   "hasModel": true,
+   "model": "patchcore",
+   "n": 90
+  }
+ ]
+}

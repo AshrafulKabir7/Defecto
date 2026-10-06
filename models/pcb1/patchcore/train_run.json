@@ -1,0 +1,18 @@
+{
+  "category": "pcb1",
+  "model": "patchcore",
+  "implementation": "patchcore_lite (ResNet18 layer2+layer3, k-center coreset, CPU)",
+  "train_images": 300,
+  "train_seconds": 107.7,
+  "memory_bank": [
+    3072,
+    384
+  ],
+  "coreset_sampling_ratio": 0.01,
+  "backbone": "resnet18 (ImageNet, torchvision)",
+  "normalisation": {
+    "raw_threshold": 1.75183,
+    "raw_min": 1.51082,
+    "raw_max": 2.87109
+  }
+}

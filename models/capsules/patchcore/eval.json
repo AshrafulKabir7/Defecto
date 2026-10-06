@@ -1,0 +1,1256 @@
+{
+ "category": "capsules",
+ "model": "patchcore",
+ "dataset": "VisA (CC BY 4.0)",
+ "image_size": 256,
+ "thresholds": {
+  "fail": 0.5,
+  "review": 0.30377,
+  "review_recall_target": 0.98,
+  "fail_max_good_reject": 0.05
+ },
+ "train": {
+  "category": "capsules",
+  "model": "patchcore",
+  "implementation": "patchcore_lite (ResNet18 layer2+layer3, k-center coreset, CPU)",
+  "train_images": 300,
+  "train_seconds": 63.2,
+  "memory_bank": [
+   3072,
+   384
+  ],
+  "coreset_sampling_ratio": 0.01,
+  "backbone": "resnet18 (ImageNet, torchvision)",
+  "normalisation": {
+   "raw_threshold": 2.39102,
+   "raw_min": 2.22763,
+   "raw_max": 3.03329
+  }
+ },
+ "splits": {
+  "val": {
+   "n_good": 24,
+   "n_bad": 40,
+   "image_auroc": 0.75,
+   "image_ap": 0.8736,
+   "roc": [
+    [
+     0.0,
+     0.0,
+     1000.0
+    ],
+    [
+     0.0,
+     0.025,
+     1.2972
+    ],
+    [
+     0.0,
+     0.475,
+     0.5453
+    ],
+    [
+     0.0417,
+     0.475,
+     0.5414
+    ],
+    [
+     0.0417,
+     0.525,
+     0.5129
+    ],
+    [
+     0.0833,
+     0.525,
+     0.5
+    ],
+    [
+     0.0833,
+     0.55,
+     0.4998
+    ],
+    [
+     0.125,
+     0.55,
+     0.498
+    ],
+    [
+     0.125,
+     0.575,
+     0.4955
+    ],
+    [
+     0.1667,
+     0.575,
+     0.4938
+    ],
+    [
+     0.1667,
+     0.6,
+     0.4936
+    ],
+    [
+     0.2083,
+     0.6,
+     0.4756
+    ],
+    [
+     0.2083,
+     0.625,
+     0.4724
+    ],
+    [
+     0.25,
+     0.625,
+     0.4675
+    ],
+    [
+     0.25,
+     0.675,
+     0.4595
+    ],
+    [
+     0.2917,
+     0.675,
+     0.4494
+    ],
+    [
+     0.2917,
+     0.7,
+     0.4492
+    ],
+    [
+     0.3333,
+     0.7,
+     0.4459
+    ],
+    [
+     0.3333,
+     0.725,
+     0.4281
+    ],
+    [
+     0.4167,
+     0.725,
+     0.4176
+    ],
+    [
+     0.4167,
+     0.75,
+     0.4147
+    ],
+    [
+     0.5417,
+     0.75,
+     0.4091
+    ],
+    [
+     0.5417,
+     0.775,
+     0.4007
+    ],
+    [
+     0.5833,
+     0.775,
+     0.3995
+    ],
+    [
+     0.5833,
+     0.825,
+     0.3807
+    ],
+    [
+     0.7917,
+     0.825,
+     0.369
+    ],
+    [
+     0.7917,
+     0.85,
+     0.3585
+    ],
+    [
+     0.8333,
+     0.85,
+     0.358
+    ],
+    [
+     0.8333,
+     0.925,
+     0.3541
+    ],
+    [
+     0.875,
+     0.925,
+     0.353
+    ],
+    [
+     0.875,
+     0.95,
+     0.3422
+    ],
+    [
+     0.9583,
+     0.95,
+     0.3208
+    ],
+    [
+     0.9583,
+     1.0,
+     0.3038
+    ],
+    [
+     1.0,
+     1.0,
+     0.2972
+    ]
+   ],
+   "at_fail_threshold": {
+    "tp": 21,
+    "fn": 19,
+    "fp": 2,
+    "tn": 22,
+    "precision": 0.913,
+    "recall": 0.525,
+    "f1": 0.6667,
+    "escape_rate": 0.475,
+    "false_reject_rate": 0.0833
+   },
+   "with_review_band": {
+    "good": {
+     "pass": 1,
+     "review": 21,
+     "fail": 2
+    },
+    "bad": {
+     "pass": 0,
+     "review": 19,
+     "fail": 21
+    },
+    "escape_rate": 0.0,
+    "review_share": 0.625
+   },
+   "images": [
+    {
+     "file": "016.JPG",
+     "label": "good",
+     "score": 0.44587
+    },
+    {
+     "file": "100.JPG",
+     "label": "good",
+     "score": 0.47564
+    },
+    {
+     "file": "152.JPG",
+     "label": "good",
+     "score": 0.41091
+    },
+    {
+     "file": "159.JPG",
+     "label": "good",
+     "score": 0.2972
+    },
+    {
+     "file": "170.JPG",
+     "label": "good",
+     "score": 0.44939
+    },
+    {
+     "file": "178.JPG",
+     "label": "good",
+     "score": 0.42289
+    },
+    {
+     "file": "179.JPG",
+     "label": "good",
+     "score": 0.36899
+    },
+    {
+     "file": "187.JPG",
+     "label": "good",
+     "score": 0.49383
+    },
+    {
+     "file": "215.JPG",
+     "label": "good",
+     "score": 0.41765
+    },
+    {
+     "file": "237.JPG",
+     "label": "good",
+     "score": 0.54143
+    },
+    {
+     "file": "306.JPG",
+     "label": "good",
+     "score": 0.49802
+    },
+    {
+     "file": "324.JPG",
+     "label": "good",
+     "score": 0.36977
+    },
+    {
+     "file": "363.JPG",
+     "label": "good",
+     "score": 0.37177
+    },
+    {
+     "file": "377.JPG",
+     "label": "good",
+     "score": 0.46755
+    },
+    {
+     "file": "402.JPG",
+     "label": "good",
+     "score": 0.41006
+    },
+    {
+     "file": "417.JPG",
+     "label": "good",
+     "score": 0.39954
+    },
+    {
+     "file": "427.JPG",
+     "label": "good",
+     "score": 0.5
+    },
+    {
+     "file": "479.JPG",
+     "label": "good",
+     "score": 0.35801
+    },
+    {
+     "file": "483.JPG",
+     "label": "good",
+     "score": 0.37635
+    },
+    {
+     "file": "488.JPG",
+     "label": "good",
+     "score": 0.32702
+    },
+    {
+     "file": "490.JPG",
+     "label": "good",
+     "score": 0.37774
+    },
+    {
+     "file": "514.JPG",
+     "label": "good",
+     "score": 0.35296
+    },
+    {
+     "file": "545.JPG",
+     "label": "good",
+     "score": 0.3208
+    },
+    {
+     "file": "569.JPG",
+     "label": "good",
+     "score": 0.40907
+    },
+    {
+     "file": "000.JPG",
+     "label": "bad",
+     "score": 0.35407
+    },
+    {
+     "file": "002.JPG",
+     "label": "bad",
+     "score": 0.41468
+    },
+    {
+     "file": "004.JPG",
+     "label": "bad",
+     "score": 0.35846
+    },
+    {
+     "file": "006.JPG",
+     "label": "bad",
+     "score": 0.38068
+    },
+    {
+     "file": "007.JPG",
+     "label": "bad",
+     "score": 0.35767
+    },
+    {
+     "file": "011.JPG",
+     "label": "bad",
+     "score": 0.46534
+    },
+    {
+     "file": "012.JPG",
+     "label": "bad",
+     "score": 0.30377
+    },
+    {
+     "file": "013.JPG",
+     "label": "bad",
+     "score": 0.4007
+    },
+    {
+     "file": "014.JPG",
+     "label": "bad",
+     "score": 0.51294
+    },
+    {
+     "file": "015.JPG",
+     "label": "bad",
+     "score": 0.47236
+    },
+    {
+     "file": "017.JPG",
+     "label": "bad",
+     "score": 0.49358
+    },
+    {
+     "file": "023.JPG",
+     "label": "bad",
+     "score": 0.35559
+    },
+    {
+     "file": "030.JPG",
+     "label": "bad",
+     "score": 0.44916
+    },
+    {
+     "file": "036.JPG",
+     "label": "bad",
+     "score": 0.45947
+    },
+    {
+     "file": "039.JPG",
+     "label": "bad",
+     "score": 0.5453
+    },
+    {
+     "file": "043.JPG",
+     "label": "bad",
+     "score": 0.31875
+    },
+    {
+     "file": "044.JPG",
+     "label": "bad",
+     "score": 0.42814
+    },
+    {
+     "file": "045.JPG",
+     "label": "bad",
+     "score": 0.71108
+    },
+    {
+     "file": "049.JPG",
+     "label": "bad",
+     "score": 0.89321
+    },
+    {
+     "file": "053.JPG",
+     "label": "bad",
+     "score": 0.49984
+    },
+    {
+     "file": "057.JPG",
+     "label": "bad",
+     "score": 0.93998
+    },
+    {
+     "file": "058.JPG",
+     "label": "bad",
+     "score": 0.80128
+    },
+    {
+     "file": "059.JPG",
+     "label": "bad",
+     "score": 0.76873
+    },
+    {
+     "file": "061.JPG",
+     "label": "bad",
+     "score": 0.66837
+    },
+    {
+     "file": "062.JPG",
+     "label": "bad",
+     "score": 0.87961
+    },
+    {
+     "file": "065.JPG",
+     "label": "bad",
+     "score": 0.83175
+    },
+    {
+     "file": "071.JPG",
+     "label": "bad",
+     "score": 0.95911
+    },
+    {
+     "file": "073.JPG",
+     "label": "bad",
+     "score": 1.0
+    },
+    {
+     "file": "074.JPG",
+     "label": "bad",
+     "score": 0.76377
+    },
+    {
+     "file": "077.JPG",
+     "label": "bad",
+     "score": 1.0
+    },
+    {
+     "file": "078.JPG",
+     "label": "bad",
+     "score": 0.80789
+    },
+    {
+     "file": "082.JPG",
+     "label": "bad",
+     "score": 0.71439
+    },
+    {
+     "file": "083.JPG",
+     "label": "bad",
+     "score": 0.9578
+    },
+    {
+     "file": "084.JPG",
+     "label": "bad",
+     "score": 0.86615
+    },
+    {
+     "file": "086.JPG",
+     "label": "bad",
+     "score": 0.49549
+    },
+    {
+     "file": "089.JPG",
+     "label": "bad",
+     "score": 0.52762
+    },
+    {
+     "file": "091.JPG",
+     "label": "bad",
+     "score": 0.39579
+    },
+    {
+     "file": "095.JPG",
+     "label": "bad",
+     "score": 0.6887
+    },
+    {
+     "file": "096.JPG",
+     "label": "bad",
+     "score": 0.599
+    },
+    {
+     "file": "098.JPG",
+     "label": "bad",
+     "score": 0.34217
+    }
+   ]
+  },
+  "test": {
+   "n_good": 36,
+   "n_bad": 60,
+   "image_auroc": 0.7083,
+   "image_ap": 0.8299,
+   "roc": [
+    [
+     0.0,
+     0.0,
+     1000.0
+    ],
+    [
+     0.0,
+     0.0167,
+     1.2977
+    ],
+    [
+     0.0,
+     0.0667,
+     1.0716
+    ],
+    [
+     0.0278,
+     0.0667,
+     1.0339
+    ],
+    [
+     0.0278,
+     0.4833,
+     0.4985
+    ],
+    [
+     0.0833,
+     0.4833,
+     0.4957
+    ],
+    [
+     0.0833,
+     0.5,
+     0.4897
+    ],
+    [
+     0.1111,
+     0.5,
+     0.488
+    ],
+    [
+     0.1111,
+     0.5667,
+     0.4771
+    ],
+    [
+     0.1667,
+     0.5667,
+     0.463
+    ],
+    [
+     0.1667,
+     0.6,
+     0.4545
+    ],
+    [
+     0.3333,
+     0.6,
+     0.4313
+    ],
+    [
+     0.3333,
+     0.65,
+     0.4248
+    ],
+    [
+     0.3889,
+     0.65,
+     0.4236
+    ],
+    [
+     0.3889,
+     0.7,
+     0.4193
+    ],
+    [
+     0.4444,
+     0.7,
+     0.4058
+    ],
+    [
+     0.4444,
+     0.7167,
+     0.3966
+    ],
+    [
+     0.4722,
+     0.7167,
+     0.3957
+    ],
+    [
+     0.4722,
+     0.7333,
+     0.392
+    ],
+    [
+     0.5833,
+     0.7333,
+     0.3861
+    ],
+    [
+     0.5833,
+     0.75,
+     0.3822
+    ],
+    [
+     0.6389,
+     0.75,
+     0.3797
+    ],
+    [
+     0.6389,
+     0.7833,
+     0.3741
+    ],
+    [
+     0.6667,
+     0.7833,
+     0.373
+    ],
+    [
+     0.6667,
+     0.8333,
+     0.3665
+    ],
+    [
+     0.6944,
+     0.8333,
+     0.365
+    ],
+    [
+     0.6944,
+     0.85,
+     0.3645
+    ],
+    [
+     0.7778,
+     0.85,
+     0.3611
+    ],
+    [
+     0.7778,
+     0.8667,
+     0.3611
+    ],
+    [
+     0.8333,
+     0.8667,
+     0.3546
+    ],
+    [
+     0.8333,
+     0.9,
+     0.3542
+    ],
+    [
+     0.9722,
+     0.9,
+     0.3409
+    ],
+    [
+     0.9722,
+     0.9833,
+     0.3086
+    ],
+    [
+     1.0,
+     0.9833,
+     0.3035
+    ],
+    [
+     1.0,
+     1.0,
+     0.2983
+    ]
+   ],
+   "at_fail_threshold": {
+    "tp": 28,
+    "fn": 32,
+    "fp": 1,
+    "tn": 35,
+    "precision": 0.9655,
+    "recall": 0.4667,
+    "f1": 0.6292,
+    "escape_rate": 0.5333,
+    "false_reject_rate": 0.0278
+   },
+   "with_review_band": {
+    "good": {
+     "pass": 1,
+     "review": 34,
+     "fail": 1
+    },
+    "bad": {
+     "pass": 1,
+     "review": 31,
+     "fail": 28
+    },
+    "escape_rate": 0.0167,
+    "review_share": 0.6771
+   },
+   "images": [
+    {
+     "file": "011.JPG",
+     "label": "good",
+     "score": 0.45212
+    },
+    {
+     "file": "013.JPG",
+     "label": "good",
+     "score": 0.37974
+    },
+    {
+     "file": "024.JPG",
+     "label": "good",
+     "score": 1.0
+    },
+    {
+     "file": "026.JPG",
+     "label": "good",
+     "score": 0.44382
+    },
+    {
+     "file": "027.JPG",
+     "label": "good",
+     "score": 0.36114
+    },
+    {
+     "file": "046.JPG",
+     "label": "good",
+     "score": 0.49574
+    },
+    {
+     "file": "062.JPG",
+     "label": "good",
+     "score": 0.35087
+    },
+    {
+     "file": "107.JPG",
+     "label": "good",
+     "score": 0.35459
+    },
+    {
+     "file": "168.JPG",
+     "label": "good",
+     "score": 0.373
+    },
+    {
+     "file": "172.JPG",
+     "label": "good",
+     "score": 0.45431
+    },
+    {
+     "file": "174.JPG",
+     "label": "good",
+     "score": 0.44439
+    },
+    {
+     "file": "196.JPG",
+     "label": "good",
+     "score": 0.36358
+    },
+    {
+     "file": "208.JPG",
+     "label": "good",
+     "score": 0.488
+    },
+    {
+     "file": "214.JPG",
+     "label": "good",
+     "score": 0.34089
+    },
+    {
+     "file": "240.JPG",
+     "label": "good",
+     "score": 0.34554
+    },
+    {
+     "file": "261.JPG",
+     "label": "good",
+     "score": 0.3636
+    },
+    {
+     "file": "286.JPG",
+     "label": "good",
+     "score": 0.46296
+    },
+    {
+     "file": "288.JPG",
+     "label": "good",
+     "score": 0.47256
+    },
+    {
+     "file": "294.JPG",
+     "label": "good",
+     "score": 0.40585
+    },
+    {
+     "file": "297.JPG",
+     "label": "good",
+     "score": 0.39573
+    },
+    {
+     "file": "303.JPG",
+     "label": "good",
+     "score": 0.42358
+    },
+    {
+     "file": "320.JPG",
+     "label": "good",
+     "score": 0.30355
+    },
+    {
+     "file": "333.JPG",
+     "label": "good",
+     "score": 0.35871
+    },
+    {
+     "file": "394.JPG",
+     "label": "good",
+     "score": 0.36495
+    },
+    {
+     "file": "400.JPG",
+     "label": "good",
+     "score": 0.41651
+    },
+    {
+     "file": "423.JPG",
+     "label": "good",
+     "score": 0.39154
+    },
+    {
+     "file": "457.JPG",
+     "label": "good",
+     "score": 0.38612
+    },
+    {
+     "file": "469.JPG",
+     "label": "good",
+     "score": 0.42476
+    },
+    {
+     "file": "484.JPG",
+     "label": "good",
+     "score": 0.34743
+    },
+    {
+     "file": "518.JPG",
+     "label": "good",
+     "score": 0.38166
+    },
+    {
+     "file": "520.JPG",
+     "label": "good",
+     "score": 0.4313
+    },
+    {
+     "file": "525.JPG",
+     "label": "good",
+     "score": 0.49821
+    },
+    {
+     "file": "552.JPG",
+     "label": "good",
+     "score": 0.38858
+    },
+    {
+     "file": "576.JPG",
+     "label": "good",
+     "score": 0.38902
+    },
+    {
+     "file": "580.JPG",
+     "label": "good",
+     "score": 0.44889
+    },
+    {
+     "file": "594.JPG",
+     "label": "good",
+     "score": 0.35155
+    },
+    {
+     "file": "001.JPG",
+     "label": "bad",
+     "score": 0.3086
+    },
+    {
+     "file": "003.JPG",
+     "label": "bad",
+     "score": 0.29831
+    },
+    {
+     "file": "005.JPG",
+     "label": "bad",
+     "score": 0.36651
+    },
+    {
+     "file": "008.JPG",
+     "label": "bad",
+     "score": 0.47722
+    },
+    {
+     "file": "009.JPG",
+     "label": "bad",
+     "score": 0.42767
+    },
+    {
+     "file": "010.JPG",
+     "label": "bad",
+     "score": 0.41982
+    },
+    {
+     "file": "016.JPG",
+     "label": "bad",
+     "score": 0.45448
+    },
+    {
+     "file": "018.JPG",
+     "label": "bad",
+     "score": 0.43056
+    },
+    {
+     "file": "019.JPG",
+     "label": "bad",
+     "score": 0.42479
+    },
+    {
+     "file": "020.JPG",
+     "label": "bad",
+     "score": 0.37406
+    },
+    {
+     "file": "021.JPG",
+     "label": "bad",
+     "score": 0.36447
+    },
+    {
+     "file": "022.JPG",
+     "label": "bad",
+     "score": 0.37633
+    },
+    {
+     "file": "024.JPG",
+     "label": "bad",
+     "score": 0.36113
+    },
+    {
+     "file": "025.JPG",
+     "label": "bad",
+     "score": 0.50407
+    },
+    {
+     "file": "026.JPG",
+     "label": "bad",
+     "score": 0.37026
+    },
+    {
+     "file": "027.JPG",
+     "label": "bad",
+     "score": 0.48733
+    },
+    {
+     "file": "028.JPG",
+     "label": "bad",
+     "score": 0.35441
+    },
+    {
+     "file": "029.JPG",
+     "label": "bad",
+     "score": 0.31337
+    },
+    {
+     "file": "031.JPG",
+     "label": "bad",
+     "score": 0.32714
+    },
+    {
+     "file": "032.JPG",
+     "label": "bad",
+     "score": 0.32083
+    },
+    {
+     "file": "033.JPG",
+     "label": "bad",
+     "score": 0.48446
+    },
+    {
+     "file": "034.JPG",
+     "label": "bad",
+     "score": 0.41933
+    },
+    {
+     "file": "035.JPG",
+     "label": "bad",
+     "score": 0.51256
+    },
+    {
+     "file": "037.JPG",
+     "label": "bad",
+     "score": 0.51947
+    },
+    {
+     "file": "038.JPG",
+     "label": "bad",
+     "score": 0.49848
+    },
+    {
+     "file": "040.JPG",
+     "label": "bad",
+     "score": 0.35419
+    },
+    {
+     "file": "041.JPG",
+     "label": "bad",
+     "score": 0.53062
+    },
+    {
+     "file": "042.JPG",
+     "label": "bad",
+     "score": 0.42089
+    },
+    {
+     "file": "046.JPG",
+     "label": "bad",
+     "score": 0.62153
+    },
+    {
+     "file": "047.JPG",
+     "label": "bad",
+     "score": 0.64565
+    },
+    {
+     "file": "048.JPG",
+     "label": "bad",
+     "score": 1.0
+    },
+    {
+     "file": "050.JPG",
+     "label": "bad",
+     "score": 0.72219
+    },
+    {
+     "file": "051.JPG",
+     "label": "bad",
+     "score": 0.72656
+    },
+    {
+     "file": "052.JPG",
+     "label": "bad",
+     "score": 0.92633
+    },
+    {
+     "file": "054.JPG",
+     "label": "bad",
+     "score": 0.94754
+    },
+    {
+     "file": "055.JPG",
+     "label": "bad",
+     "score": 0.73781
+    },
+    {
+     "file": "056.JPG",
+     "label": "bad",
+     "score": 0.83712
+    },
+    {
+     "file": "060.JPG",
+     "label": "bad",
+     "score": 0.88851
+    },
+    {
+     "file": "063.JPG",
+     "label": "bad",
+     "score": 1.0
+    },
+    {
+     "file": "064.JPG",
+     "label": "bad",
+     "score": 0.76102
+    },
+    {
+     "file": "066.JPG",
+     "label": "bad",
+     "score": 0.392
+    },
+    {
+     "file": "067.JPG",
+     "label": "bad",
+     "score": 0.57439
+    },
+    {
+     "file": "068.JPG",
+     "label": "bad",
+     "score": 0.80054
+    },
+    {
+     "file": "069.JPG",
+     "label": "bad",
+     "score": 1.0
+    },
+    {
+     "file": "070.JPG",
+     "label": "bad",
+     "score": 1.0
+    },
+    {
+     "file": "072.JPG",
+     "label": "bad",
+     "score": 0.99982
+    },
+    {
+     "file": "075.JPG",
+     "label": "bad",
+     "score": 1.0
+    },
+    {
+     "file": "076.JPG",
+     "label": "bad",
+     "score": 0.73515
+    },
+    {
+     "file": "079.JPG",
+     "label": "bad",
+     "score": 0.85867
+    },
+    {
+     "file": "080.JPG",
+     "label": "bad",
+     "score": 0.92703
+    },
+    {
+     "file": "081.JPG",
+     "label": "bad",
+     "score": 0.4771
+    },
+    {
+     "file": "085.JPG",
+     "label": "bad",
+     "score": 0.79547
+    },
+    {
+     "file": "087.JPG",
+     "label": "bad",
+     "score": 0.38223
+    },
+    {
+     "file": "088.JPG",
+     "label": "bad",
+     "score": 0.46069
+    },
+    {
+     "file": "090.JPG",
+     "label": "bad",
+     "score": 0.36896
+    },
+    {
+     "file": "092.JPG",
+     "label": "bad",
+     "score": 0.68803
+    },
+    {
+     "file": "093.JPG",
+     "label": "bad",
+     "score": 0.50346
+    },
+    {
+     "file": "094.JPG",
+     "label": "bad",
+     "score": 0.48972
+    },
+    {
+     "file": "097.JPG",
+     "label": "bad",
+     "score": 0.39661
+    },
+    {
+     "file": "099.JPG",
+     "label": "bad",
+     "score": 0.33853
+    }
+   ],
+   "pixel_auroc": 0.9587,
+   "pixel_aupro_0.3": 0.6968
+  }
+ },
+ "latency_ms": {
+  "device": "CPU (PyTorch, laptop i7-10750H)",
+  "batch": 1,
+  "mean": 50.82,
+  "p95": 65.39,
+  "note": "Feature extraction + nearest-neighbour scoring + smoothing on a 256x256 input; excludes image decoding."
+ }
+}
